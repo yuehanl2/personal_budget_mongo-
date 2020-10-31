@@ -1,0 +1,41 @@
+
+
+    
+    
+[
+    {
+        "title":"Eat out",
+        "budget":70
+    },
+    {
+        "title":"Rent",
+        "budget":375
+    },
+    {
+        "title":"Groceries",
+        "budget":110
+    },
+
+    {
+        "title":"Electricity",
+        "budget":70
+
+    },
+    {
+        "title":"Outdoor sports",
+        "budget":100
+
+    },
+    {
+        "title":"Shopping",
+        "budget":100
+
+    },
+    {
+        "title":"Water",
+        "budget":60
+
+    }
+    ]
+ 
+

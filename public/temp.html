@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+	<title>D3 </title>
+</head>
+
+<body>
+	<div id="d3Pie"></div>
+	<script src="https://d3js.org/d3.v3.min.js"></script>
+	<script src="d3.legend.js"></script>
+	<script>
+
+var color = d3.scale.category20();
+
+var data = [{"title":"Eat out", "budget":70}, 
+		          {"title":"Rent", "budget":375}, 
+				  {"title":"Groceries", "budget":110},
+				  {"title":"Electricity", "budget":70},
+				  {"title":"Outdoor sports", "budget":100},
+				  {"title":"Shopping", "budget":100},
+				  {"title":"Water", "budget":60}];
+
+var vis = d3.select('#d3Pie')
+       .append("svg:svg")
+	   .data([data])
+	   .attr("width", 450)
+	   .attr("height", 450)
+	   .append("svg:g").
+	   attr("transform", "translate(" + 200 + "," + 220 + ")");
+
+var pie = d3.layout
+         .pie()
+         .value(function(d){return d.budget;});
+
+
+var arc = d3.svg
+          .arc()
+		  .outerRadius(150);
+
+
+var arcs = vis
+          .selectAll("g.slice")
+          .data(pie)
+		  .enter()
+		  .append("svg:g")
+		  .attr("class", "slice");
+
+arcs.append("svg:path")
+    .attr("fill", function(d, i){
+        return color(i);
+    })
+    .attr("d", function (d) {
+
+        console.log(arc(d));
+        return arc(d);
+    });
+
+
+arcs.append("svg:text").attr("transform", function(d){
+			d.innerRadius = 120;
+			d.outerRadius = 300;
+    return "translate(" + arc.centroid(d) + ")";}).attr("text-anchor", "middle").text( function(d, i) {
+    return data[i].title;}
+		);
+
+arcs.append("svg:text").attr("transform", function(d){
+			d.innerRadius = 0;
+			d.outerRadius = 300;
+    return "translate(" + arc.centroid(d) + ")";}).attr("text-anchor", "middle").text( function(d, i) {
+    return data[i].budget;}
+		);
+		
+
+	</script>
+</body>
+
+
+
+</html>
+
+

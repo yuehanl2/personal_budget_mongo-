@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- This is an SEO Change -->
+    <meta name="description" content="Have A problem about spending your money? This is a free app to help you!" > 
+    
+    <!-- This is an SEO Change -->
+    <link rel="alternate" hreflang="es" href="http://es.example.com/">
+    
+    <!-- This is an A11y Change -->
+    <a id="skip" alt="skip to content" href="#content">Skip to content</a>
+    <title>Personal Budget</title>
+    <link rel="stylesheet" href="/reset.css">
+    <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+
+    <div class="menu">
+        <ul>
+            <!-- This is a Semantic HTML Change -->
+            <nav>
+            <!-- This is an SEO Change -->
+            <li><a href="/" rel='external no follow'> Home </a></li>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="/login.html">Login</a></li>
+            <li><a href="https://google.com">Google</a></li>
+            </nav>
+        </ul>
+    </div>
+
+    <div class="hero">
+        <h1>Personal Budget</h1>
+        <h2>A personal-budget management app</h2>
+    </div>
+
+    <div class="container center">
+
+        <div class="page-area">
+
+            <div class="text-box">
+                <!-- This is an A11y Change -->
+                <h3>Stay on track</h3>
+                <!-- This is an A11y Change -->
+                <h2>
+                    Do you know where you are spending your money? If you really stop to track it down,
+                    you would get surprised! Proper budget management depends on real data... and this
+                    app will help you with that!
+                </h2>
+            </div>
+    
+            <div class="text-box">
+                <!-- This is a Semantic HTML Change -->
+                <article>
+                <h3>Alerts</h3>
+                <h2>
+                    What if your clothing budget ended? You will get an alert. The goal is to never go over the budget.
+                </h2>
+                </article>
+            </div>
+    
+            <div class="text-box">
+                <h3>Results</h3>
+                <h2>
+                    People who stick to a financial plan, budgeting every expense, get out of debt faster!
+                    Also, they to live happier lives... since they expend without guilt or fear... 
+                    because they know it is all good and accounted for.
+                </h2>
+            </div>
+    
+            <div class="text-box">
+                <h3>Free</h3>
+                <h2>
+                    This app is free!!! And you are the only one holding your data!
+                </h2>
+            </div>
+    
+            <div class="text-box">
+                <h3>Stay on track</h3>
+                <h2>
+                    Do you know where you are spending your money? If you really stop to track it down,
+                    you would get surprised! Proper budget management depends on real data... and this
+                    app will help you with that!
+                </h2>
+            </div>
+    
+            <div class="text-box">
+                <h3>Alerts</h3>
+                <h2>
+                    What if your clothing budget ended? You will get an alert. The goal is to never go over the budget.
+                </h2>
+            </div>
+    
+            <div class="text-box">
+                <h3>D3js pie</h3>
+                <h2>
+                    <div id="d3Pie"></div>
+                </h2>
+            </div>
+    
+            <div class="text-box">
+                <h3>Chart</h3>
+                <h2>
+                    <canvas id="myChart" width="400" height="400"></canvas>
+                </h2>
+            </div>
+
+        </div>
+
+    </div>
+     <!-- This is a Semantic HTML Change -->
+     <footer>
+    <div class="bottom">
+        <div class="center">
+            All rights reserved &copy; Fabio Nolasco
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js" integrity="sha512-quHCp3WbBNkwLfYUMd+KwBAgpVukJu5MncuQaWXgCrfgcxCJAq/fo+oqrRKOj+UKEmyMCG3tb8RB63W+EmrOBg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+
+<script>
+    var dataSource = {
+        datasets:[
+            {
+                data: [],
+                backgroundColor:[
+                    '#ffcd56',
+                    '#ff6384',
+                    '#36a2eb',
+                    '#fd6b19',
+                    '#04B45F',
+                    '#2E3B0B',
+                    '#FE2EF7',
+
+                ],
+            }
+        ],
+        labels:[
+
+        ]
+        
+    };
+
+    function createChart() {
+        var ctx = document.getElementById('myChart').getContext('2d');  
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: dataSource
+        });
+        
+     }
+     
+
+    function getBudget(){
+        axios.get('/budget')
+        .then(function (res){
+            console.log(res.data);
+            for (var i = 0; i < res.data.length; i++){
+                dataSource.datasets[0].data[i] = res.data[i].budget;
+                dataSource.labels[i] = res.data[i].title;
+            }
+            createChart();
+        });
+    }
+
+    getBudget(0);
+
+
+var color = d3.scale.category20();
+
+d3.json("/budget", function (data){
+
+	var vis = d3.select('#d3Pie')
+       .append("svg:svg")
+	   .data([data])
+	   .attr("width", 450)
+	   .attr("height", 450)
+	   .append("svg:g").
+	   attr("transform", "translate(" + 200 + "," + 220 + ")");
+
+var pie = d3.layout
+         .pie()
+         .value(function(d){return d.budget;});
+
+
+var arc = d3.svg
+          .arc()
+		  .outerRadius(150);
+
+
+var arcs = vis
+          .selectAll("g.slice")
+          .data(pie)
+		  .enter()
+		  .append("svg:g")
+		  .attr("class", "slice");
+
+arcs.append("svg:path")
+    .attr("fill", function(d, i){
+        return color(i);
+    })
+    .attr("d", function (d) {
+
+        console.log(arc(d));
+        return arc(d);
+    });
+
+
+arcs.append("svg:text").attr("transform", function(d){
+			d.innerRadius = 120;
+			d.outerRadius = 300;
+    return "translate(" + arc.centroid(d) + ")";}).attr("text-anchor", "middle").text( function(d, i) {
+    return data[i].title;}
+		);
+
+arcs.append("svg:text").attr("transform", function(d){
+			d.innerRadius = 0;
+			d.outerRadius = 300;
+    return "translate(" + arc.centroid(d) + ")";}).attr("text-anchor", "middle").text( function(d, i) {
+    return data[i].budget;}
+		);
+
+    
+})
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
